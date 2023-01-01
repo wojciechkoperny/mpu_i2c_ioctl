@@ -10,7 +10,17 @@ namespace sensor::imu::registers
     constexpr uint8_t ACCEL_XOUT_H{0x3B};
     constexpr uint8_t ACCEL_XOUT_L{0x3C};
     constexpr uint8_t ACCEL_YOUT_H{0x3D};
+    constexpr uint8_t ACCEL_YOUT_L{0x3E};
     constexpr uint8_t ACCEL_ZOUT_H{0x3F};
+    constexpr uint8_t ACCEL_ZOUT_L{0x40};
+    constexpr uint8_t TEMP_OUT_H{0x41};
+    constexpr uint8_t TEMP_OUT_L{0x42};
+    constexpr uint8_t GYRO_XOUT_H{0x43};
+    constexpr uint8_t GYRO_XOUT_L{0x44};
+    constexpr uint8_t GYRO_YOUT_H{0x45};
+    constexpr uint8_t GYRO_YOUT_L{0x46};
+    constexpr uint8_t GYRO_ZOUT_H{0x47};
+    constexpr uint8_t GYRO_ZOUT_L{0x48};
 
 } // namespace sensor::imu
 

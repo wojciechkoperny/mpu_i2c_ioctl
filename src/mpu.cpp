@@ -3,6 +3,7 @@
 #include "mpu.hpp"
 #include "mpu_cfg.hpp"
 #include "registers.hpp"
+#include "mpu_priv.hpp"
 
 // #include <stdio.h>
 // #include <stdlib.h>
@@ -89,15 +90,16 @@ namespace sensor::imu
     {
         mpu_data data;
 
-        data.x = i2c_readRegister(sensor::imu::registers::ACCEL_XOUT_H);
-        data.x = data.x << 8;
-        data.x += i2c_readRegister(sensor::imu::registers::ACCEL_XOUT_L);
-        if (data.x >= 0x8000)
+        for (int i = 0; i < 3; i++)
         {
-            data.x = -(65536 - data.x);
+            data[i].raw = i2c_readRegister(sensor::imu::registers_array[0][i][0]);
+            data[i].raw = data[i].raw << 8;
+            data[i].raw += i2c_readRegister(sensor::imu::registers_array[0][i][1]);
+            if (data[i].raw >= 0x8000U)
+            {
+                data[i].raw = -(0x10000U - data[i].raw );
+            }
         }
-        data.y = 2;
-        data.z = 3;
         return data;
     }
 
