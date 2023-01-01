@@ -27,6 +27,7 @@ namespace sensor::imu
         ~Mpu9250();
 
        mpu_data GetAccelReading();
+       mpu_data GetGyroReading();
 
     private:
         void i2c_writeRegister(uint8_t const command, uint8_t const value);

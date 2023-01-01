@@ -105,4 +105,22 @@ namespace sensor::imu
         return data;
     }
 
+    mpu_data Mpu9250::GetGyroReading()
+    {
+        mpu_data data;
+
+        for (int i = 0; i < 3; i++)
+        {
+            data[i].raw = i2c_readRegister(sensor::imu::registers_array[1][i][0]);
+            data[i].raw = data[i].raw << 8;
+            data[i].raw += i2c_readRegister(sensor::imu::registers_array[1][i][1]);
+            if (data[i].raw >= 0x8000U)
+            {
+                data[i].raw = -(0x10000U - data[i].raw);
+            }
+            //data[i].scaled = data[i].raw * (2.0f / 32767.5f) * sensor::imu::configs::G_FORCE;
+            data[i].unit = "gyro";
+        }
+        return data;
+    }
 } // namespace sensor::imu
