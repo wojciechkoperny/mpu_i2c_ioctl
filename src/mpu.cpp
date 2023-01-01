@@ -97,8 +97,10 @@ namespace sensor::imu
             data[i].raw += i2c_readRegister(sensor::imu::registers_array[0][i][1]);
             if (data[i].raw >= 0x8000U)
             {
-                data[i].raw = -(0x10000U - data[i].raw );
+                data[i].raw = -(0x10000U - data[i].raw);
             }
+            data[i].scaled = data[i].raw * (2.0f / 32767.5f) * sensor::imu::configs::G_FORCE;
+            data[i].unit = "m/s^2";
         }
         return data;
     }

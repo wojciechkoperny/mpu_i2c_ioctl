@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdexcept>
+#include <unistd.h>
 #include "mpu.hpp"
 
 static constexpr float G_FORCE = 9.80665f;
@@ -11,15 +12,21 @@ int main()
         sensor::imu::Mpu9250 Mpu9250;
         sensor::imu::mpu_data data;
 
-        data = Mpu9250.GetAccelReading();
+        while (1)
+        {
 
-        std::cout << "\nwartosc x: " << data[sensor::imu::X].raw;
-        std::cout << "\nwartosc y: " << data[sensor::imu::Y].raw;
-        std::cout << "\nwartosc z: " << data[sensor::imu::Z].raw;
+            usleep(500000);
 
-        // data.x = data.x * (2.0f / 32767.5f) * G_FORCE;
-        // std::cout << "\nwartosc x przeliczona: " << data.x;
+            data = Mpu9250.GetAccelReading();
 
+            std::cout << "\nwartosc x: " << data[sensor::imu::X].scaled << data[sensor::imu::X].unit;
+            std::cout << "\nwartosc y: " << data[sensor::imu::Y].scaled << data[sensor::imu::Y].unit;
+            std::cout << "\nwartosc z: " << data[sensor::imu::Z].scaled << data[sensor::imu::Z].unit;
+            std::cout << "\n--------------------------";
+
+            // data.x = data.x * (2.0f / 32767.5f) * G_FORCE;
+            // std::cout << "\nwartosc x przeliczona: " << data.x;
+        }
     }
 
     catch (const std::exception &e)
