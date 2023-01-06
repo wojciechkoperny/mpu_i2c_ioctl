@@ -11,6 +11,7 @@ int main()
     {
         sensor::imu::Mpu9250 Mpu9250;
         sensor::imu::mpu_data data;
+        double temp;
 
         while (1)
         {
@@ -25,13 +26,14 @@ int main()
             std::cout << "\n--------------------------";
 
             data = Mpu9250.GetGyroReading();
-            std::cout << "\nwartosc x: " << data[sensor::imu::X].raw << data[sensor::imu::X].unit;
-            std::cout << "\nwartosc y: " << data[sensor::imu::Y].raw << data[sensor::imu::Y].unit;
-            std::cout << "\nwartosc z: " << data[sensor::imu::Z].raw << data[sensor::imu::Z].unit;
+            std::cout << "\nwartosc x: " << data[sensor::imu::X].scaled << "\t" << data[sensor::imu::X].unit;
+            std::cout << "\nwartosc y: " << data[sensor::imu::Y].scaled << "\t" << data[sensor::imu::Y].unit;
+            std::cout << "\nwartosc z: " << data[sensor::imu::Z].scaled << "\t" << data[sensor::imu::Z].unit;
             std::cout << "\n--------------------------";
 
-            // data.x = data.x * (2.0f / 32767.5f) * G_FORCE;
-            // std::cout << "\nwartosc x przeliczona: " << data.x;
+            temp = Mpu9250.GetTempReading();
+            std::cout << "\ntemperatura: " << temp << " Celsius";
+            std::cout << "\n--------------------------";
         }
     }
 

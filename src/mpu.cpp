@@ -118,9 +118,31 @@ namespace sensor::imu
             {
                 data[i].raw = -(0x10000U - data[i].raw);
             }
-            //data[i].scaled = data[i].raw * (2.0f / 32767.5f) * sensor::imu::configs::G_FORCE;
-            data[i].unit = "gyro";
+            data[i].scaled = data[i].raw / 131.0f;
+            data[i].unit = "deg/sec";
         }
+        return data;
+    }
+
+    double Mpu9250::GetTempReading()
+    {
+        double data;
+        int raw;
+
+        raw = i2c_readRegister(sensor::imu::temp_register[0]);
+        raw = raw << 8;
+        raw += i2c_readRegister(sensor::imu::temp_register[1]);
+        data = (raw - sensor::imu::configs::ROOMTEMP_OFFSET) / sensor::imu::configs::TEMP_SENSITIVITY + 21.0;
+
+        // std::cout << "temperatura H : " << tm;
+        //  data[i].raw += i2c_readRegister(sensor::imu::registers_array[1][i][1]);
+        //  if (data[i].raw >= 0x8000U)
+        //  {
+        //      data[i].raw = -(0x10000U - data[i].raw);
+        //  }
+        //  data[i].scaled = data[i].raw / 131.0f;
+        //  data[i].unit = "deg/sec";
+
         return data;
     }
 } // namespace sensor::imu

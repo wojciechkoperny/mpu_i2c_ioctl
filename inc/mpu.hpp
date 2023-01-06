@@ -11,7 +11,7 @@ namespace sensor::imu
     constexpr uint8_t Y{1};
     constexpr uint8_t Z{2};
 
-     typedef struct
+    typedef struct
     {
         int16_t raw;
         double scaled;
@@ -26,8 +26,9 @@ namespace sensor::imu
         Mpu9250();
         ~Mpu9250();
 
-       mpu_data GetAccelReading();
-       mpu_data GetGyroReading();
+        mpu_data GetAccelReading();
+        mpu_data GetGyroReading();
+        double GetTempReading();
 
     private:
         void i2c_writeRegister(uint8_t const command, uint8_t const value);
