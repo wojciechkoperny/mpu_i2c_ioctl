@@ -21,6 +21,12 @@ namespace sensor::imu::registers
     constexpr uint8_t GYRO_YOUT_L{0x46};
     constexpr uint8_t GYRO_ZOUT_H{0x47};
     constexpr uint8_t GYRO_ZOUT_L{0x48};
+    constexpr uint8_t HXL{0x03};
+    constexpr uint8_t HXH{0x04};
+    constexpr uint8_t HYL{0x05};
+    constexpr uint8_t HYH{0x06};
+    constexpr uint8_t HZL{0x07};
+    constexpr uint8_t HZH{0x08};
 
 } // namespace sensor::imu
 

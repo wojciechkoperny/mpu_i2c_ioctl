@@ -31,6 +31,12 @@ int main()
             std::cout << "\nwartosc z: " << data[sensor::imu::Z].scaled << "\t" << data[sensor::imu::Z].unit;
             std::cout << "\n--------------------------";
 
+            data = Mpu9250.GetMagReading();
+            std::cout << "\nmag x: " << data[sensor::imu::X].scaled << "\t" << data[sensor::imu::X].unit;
+            std::cout << "\nmag y: " << data[sensor::imu::Y].scaled << "\t" << data[sensor::imu::Y].unit;
+            std::cout << "\nmag z: " << data[sensor::imu::Z].scaled << "\t" << data[sensor::imu::Z].unit;
+            std::cout << "\n--------------------------";
+
             temp = Mpu9250.GetTempReading();
             std::cout << "\ntemperatura: " << temp << " Celsius";
             std::cout << "\n--------------------------";

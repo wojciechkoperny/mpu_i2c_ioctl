@@ -5,10 +5,6 @@
 #include "registers.hpp"
 #include "mpu_priv.hpp"
 
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <errno.h>
-// #include <string.h>
 #include <cerrno>
 #include <cstring>
 #include <clocale>
@@ -118,8 +114,27 @@ namespace sensor::imu
             {
                 data[i].raw = -(0x10000U - data[i].raw);
             }
-            data[i].scaled = data[i].raw / 131.0f;
-            data[i].unit = "deg/sec";
+            data[i].scaled = (data[i].raw / 131.0f) * 0.01745f;
+            data[i].unit = "rad/sec";
+        }
+        return data;
+    }
+
+    mpu_data Mpu9250::GetMagReading()
+    {
+        mpu_data data;
+
+        for (int i = 0; i < 3; i++)
+        {
+            data[i].raw = i2c_readRegister(sensor::imu::registers_array[2][i][0]);
+            data[i].raw = data[i].raw << 8;
+            data[i].raw += i2c_readRegister(sensor::imu::registers_array[2][i][1]);
+            if (data[i].raw >= 0x8000U)
+            {
+                data[i].raw = -(0x10000U - data[i].raw);
+            }
+            data[i].scaled = data[i].raw;
+            data[i].unit = "m/s^2";
         }
         return data;
     }
@@ -133,15 +148,6 @@ namespace sensor::imu
         raw = raw << 8;
         raw += i2c_readRegister(sensor::imu::temp_register[1]);
         data = (raw - sensor::imu::configs::ROOMTEMP_OFFSET) / sensor::imu::configs::TEMP_SENSITIVITY + 21.0;
-
-        // std::cout << "temperatura H : " << tm;
-        //  data[i].raw += i2c_readRegister(sensor::imu::registers_array[1][i][1]);
-        //  if (data[i].raw >= 0x8000U)
-        //  {
-        //      data[i].raw = -(0x10000U - data[i].raw);
-        //  }
-        //  data[i].scaled = data[i].raw / 131.0f;
-        //  data[i].unit = "deg/sec";
 
         return data;
     }

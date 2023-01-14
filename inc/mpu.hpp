@@ -28,6 +28,7 @@ namespace sensor::imu
 
         mpu_data GetAccelReading();
         mpu_data GetGyroReading();
+        mpu_data GetMagReading();
         double GetTempReading();
 
     private:
