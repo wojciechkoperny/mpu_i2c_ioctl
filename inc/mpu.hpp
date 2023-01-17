@@ -51,6 +51,7 @@ namespace sensor::imu
         uint8_t i2c_readRegister(uint8_t const command);
         void changeAccelDLPF(MPU9250_DLPF dlpf);
         void changeGyroDLPF(MPU9250_DLPF dlpf);
+        void changeSampleRateDivider(uint8_t divider);
         template <typename T>
         double getAverage(std::vector<T> const &v);
 

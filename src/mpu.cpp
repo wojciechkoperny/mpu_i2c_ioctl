@@ -42,6 +42,7 @@ namespace sensor::imu
 
         changeGyroDLPF(MPU9250_DLPF_6);
         changeAccelDLPF(MPU9250_DLPF_6);
+        changeSampleRateDivider(5);
     }
     Mpu9250::~Mpu9250()
     {
@@ -72,6 +73,11 @@ namespace sensor::imu
         regVal &= 0xF8;
         regVal |= dlpf;
         i2c_writeRegister(sensor::imu::registers::ACCEL_CONFIG_2, regVal);
+    }
+
+    void Mpu9250::changeSampleRateDivider(uint8_t divider)
+    {
+        i2c_writeRegister(sensor::imu::registers::SMPLRT_DIV, divider);
     }
 
     bool Mpu9250::SelfTestProcedure()
