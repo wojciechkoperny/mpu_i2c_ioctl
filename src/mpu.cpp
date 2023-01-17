@@ -38,11 +38,45 @@ namespace sensor::imu
         }
 
         // reset power register
-        (void)i2c_writeRegister(sensor::imu::registers::PWR_MGMT_1, 0x0);
+        i2c_writeRegister(sensor::imu::registers::PWR_MGMT_1, 0x0);
+
+        changeGyroDLPF(MPU9250_DLPF_6);
+        changeAccelDLPF(MPU9250_DLPF_6);
     }
     Mpu9250::~Mpu9250()
     {
         close(deviceID);
+    }
+
+    void Mpu9250::changeGyroDLPF(MPU9250_DLPF dlpf)
+    {
+        // fchoice set to use DLPF
+        uint8_t regVal = i2c_readRegister(sensor::imu::registers::GYRO_CONFIG);
+        regVal &= 0xFC;
+        i2c_writeRegister(sensor::imu::registers::GYRO_CONFIG, regVal);
+
+        // enable requested DLPF
+        regVal = i2c_readRegister(sensor::imu::registers::CONFIG);
+        regVal &= 0xF8;
+        regVal |= dlpf;
+        i2c_writeRegister(sensor::imu::registers::CONFIG, regVal);
+    }
+
+    void Mpu9250::changeAccelDLPF(MPU9250_DLPF dlpf)
+    {
+        uint8_t regVal = i2c_readRegister(sensor::imu::registers::ACCEL_CONFIG_2);
+        // fchoice set to use DLPF
+        regVal &= ~8;
+
+        // enable requested DLPF
+        regVal &= 0xF8;
+        regVal |= dlpf;
+        i2c_writeRegister(sensor::imu::registers::ACCEL_CONFIG_2, regVal);
+    }
+
+    bool Mpu9250::SelfTestProcedure()
+    {
+        return true;
     }
 
     void Mpu9250::i2c_writeRegister(uint8_t const command, uint8_t const value)

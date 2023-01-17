@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <iostream>
 #include <array>
+#include <vector>
 
 namespace sensor::imu
 {
@@ -18,6 +19,18 @@ namespace sensor::imu
         std::string unit;
     } record_data;
 
+    typedef enum
+    {
+        MPU9250_DLPF_0 = 0u,
+        MPU9250_DLPF_1 = 1u,
+        MPU9250_DLPF_2 = 2u,
+        MPU9250_DLPF_3 = 3u,
+        MPU9250_DLPF_4 = 4u,
+        MPU9250_DLPF_5 = 5u,
+        MPU9250_DLPF_6 = 6u,
+        MPU9250_DLPF_7 = 7u,
+    } MPU9250_DLPF;
+
     typedef std::array<record_data, 3> mpu_data;
 
     class Mpu9250
@@ -25,6 +38,8 @@ namespace sensor::imu
     public:
         Mpu9250();
         ~Mpu9250();
+
+        bool SelfTestProcedure();
 
         mpu_data GetAccelReading();
         mpu_data GetGyroReading();
@@ -34,9 +49,25 @@ namespace sensor::imu
     private:
         void i2c_writeRegister(uint8_t const command, uint8_t const value);
         uint8_t i2c_readRegister(uint8_t const command);
+        void changeAccelDLPF(MPU9250_DLPF dlpf);
+        void changeGyroDLPF(MPU9250_DLPF dlpf);
+        template <typename T>
+        double getAverage(std::vector<T> const &v);
 
         int deviceID;
     };
+
+    template <typename T>
+    double getAverage(std::vector<T> const &v)
+    {
+        // if (v.empty())
+        // {
+        //     return 0;
+        // }
+
+        // return std::reduce(v.begin(), v.end(), 0.0) / v.size();
+        return 0;
+    }
 
 } // namespace sensor::imu
 

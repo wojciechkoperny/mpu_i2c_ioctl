@@ -25,6 +25,7 @@ namespace sensor::imu
 
     uint8_t **registers_array[]{accel_register, gyro_register, mag_register};
 
+
 } // namespace sensor::imu
 
 #endif /* MPU_PRIV_HPP_INCLUDE */
