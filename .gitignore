@@ -1,1 +1,6 @@
-a.out
+.vscode
+build
+install
+log
+src/imu_tools
+src/cpp_pubsub
