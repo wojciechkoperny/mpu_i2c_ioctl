@@ -6,6 +6,12 @@
 
 namespace sensor::imu
 {
+    constexpr int ACCEL_REG{0U};
+    constexpr int GYRO_REG{1U};
+    constexpr int MAG_REG{2U};
+    constexpr int HIGH_BYTE_REG{0U};
+    constexpr int LOW_BYTE_REG{1U};
+
     uint8_t x_acc_register[]{sensor::imu::registers::ACCEL_XOUT_H, sensor::imu::registers::ACCEL_XOUT_L};
     uint8_t y_acc_register[]{sensor::imu::registers::ACCEL_YOUT_H, sensor::imu::registers::ACCEL_YOUT_L};
     uint8_t z_acc_register[]{sensor::imu::registers::ACCEL_ZOUT_H, sensor::imu::registers::ACCEL_ZOUT_L};

@@ -125,15 +125,20 @@ namespace sensor::imu
     mpu_data Mpu9250::GetAccelReading()
     {
         mpu_data data;
+        int temp_data_raw[3]={0};
 
         for (int i = 0; i < 3; i++)
         {
-            data[i].raw = i2c_readRegister(sensor::imu::registers_array[0][i][0]);
-            data[i].raw = data[i].raw << 8;
-            data[i].raw += i2c_readRegister(sensor::imu::registers_array[0][i][1]);
-            if (data[i].raw >= 0x8000U)
+            temp_data_raw[i] = i2c_readRegister(sensor::imu::registers_array[sensor::imu::ACCEL_REG][i][sensor::imu::HIGH_BYTE_REG]);
+            temp_data_raw[i] = temp_data_raw[i] << 8;
+            temp_data_raw[i] += i2c_readRegister(sensor::imu::registers_array[sensor::imu::ACCEL_REG][i][sensor::imu::LOW_BYTE_REG]);
+            if (temp_data_raw[i] >= 0x8000)
             {
-                data[i].raw = -(0x10000U - data[i].raw);
+                data[i].raw = -(0x10000 - temp_data_raw[i]);
+            }
+            else
+            {
+                data[i].raw = temp_data_raw[i];
             }
             data[i].scaled = data[i].raw * (2.0f / 32767.5f) * sensor::imu::configs::G_FORCE;
             data[i].unit = "m/s^2";
@@ -144,15 +149,20 @@ namespace sensor::imu
     mpu_data Mpu9250::GetGyroReading()
     {
         mpu_data data;
+        int temp_data_raw[3] = {0};
 
         for (int i = 0; i < 3; i++)
         {
-            data[i].raw = i2c_readRegister(sensor::imu::registers_array[1][i][0]);
-            data[i].raw = data[i].raw << 8;
-            data[i].raw += i2c_readRegister(sensor::imu::registers_array[1][i][1]);
-            if (data[i].raw >= 0x8000U)
+            temp_data_raw[i] = i2c_readRegister(sensor::imu::registers_array[sensor::imu::GYRO_REG][i][sensor::imu::HIGH_BYTE_REG]);
+            temp_data_raw[i] = temp_data_raw[i] << 8;
+            temp_data_raw[i] += i2c_readRegister(sensor::imu::registers_array[sensor::imu::GYRO_REG][i][sensor::imu::LOW_BYTE_REG]);
+            if (temp_data_raw[i] >= 0x8000)
             {
-                data[i].raw = -(0x10000U - data[i].raw);
+                data[i].raw = -(0x10000 - temp_data_raw[i]);
+            }
+            else
+            {
+                data[i].raw = temp_data_raw[i];
             }
             data[i].scaled = (data[i].raw / 131.0f) * 0.01745f;
             data[i].unit = "rad/sec";
@@ -163,15 +173,20 @@ namespace sensor::imu
     mpu_data Mpu9250::GetMagReading()
     {
         mpu_data data;
+        int temp_data_raw[3] = {0};
 
         for (int i = 0; i < 3; i++)
         {
-            data[i].raw = i2c_readRegister(sensor::imu::registers_array[2][i][0]);
-            data[i].raw = data[i].raw << 8;
-            data[i].raw += i2c_readRegister(sensor::imu::registers_array[2][i][1]);
-            if (data[i].raw >= 0x8000U)
+            temp_data_raw[i] = i2c_readRegister(sensor::imu::registers_array[sensor::imu::MAG_REG][i][sensor::imu::HIGH_BYTE_REG]);
+            temp_data_raw[i] = temp_data_raw[i] << 8;
+            temp_data_raw[i] += i2c_readRegister(sensor::imu::registers_array[sensor::imu::MAG_REG][i][sensor::imu::LOW_BYTE_REG]);
+            if (temp_data_raw[i] >= 0x8000)
             {
-                data[i].raw = -(0x10000U - data[i].raw);
+                data[i].raw = -(0x10000 - temp_data_raw[i]);
+            }
+            else
+            {
+                data[i].raw = temp_data_raw[i];
             }
             data[i].scaled = data[i].raw;
             data[i].unit = "m/s^2";
@@ -184,9 +199,9 @@ namespace sensor::imu
         double data;
         int raw;
 
-        raw = i2c_readRegister(sensor::imu::temp_register[0]);
+        raw = i2c_readRegister(sensor::imu::temp_register[sensor::imu::HIGH_BYTE_REG]);
         raw = raw << 8;
-        raw += i2c_readRegister(sensor::imu::temp_register[1]);
+        raw += i2c_readRegister(sensor::imu::temp_register[sensor::imu::LOW_BYTE_REG]);
         data = (raw - sensor::imu::configs::ROOMTEMP_OFFSET) / sensor::imu::configs::TEMP_SENSITIVITY + 21.0;
 
         return data;

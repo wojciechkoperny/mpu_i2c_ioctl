@@ -5,6 +5,7 @@
 #include <iostream>
 #include <array>
 #include <vector>
+#include <numeric>
 
 namespace sensor::imu
 {
@@ -61,13 +62,13 @@ namespace sensor::imu
     template <typename T>
     double getAverage(std::vector<T> const &v)
     {
-        // if (v.empty())
-        // {
-        //     return 0;
-        // }
+        if (v.empty())
+        {
+            return 0;
+        }
 
-        // return std::reduce(v.begin(), v.end(), 0.0) / v.size();
-        return 0;
+        return std::reduce(v.begin(), v.end(), 0.0) / v.size();
+        // /return 0;
     }
 
 } // namespace sensor::imu

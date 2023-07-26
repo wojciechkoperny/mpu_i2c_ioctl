@@ -10,14 +10,14 @@
 
 static constexpr float G_FORCE = 9.80665f;
 
-class ImuPublisher : public rclcpp::Node
+class mpu9250 : public rclcpp::Node
 {
 public:
-  ImuPublisher() : Node("ImuPublisher")
+  mpu9250() : Node("mpu9250")
   {
     mPublisherImu = this->create_publisher<sensor_msgs::msg::Imu>("/imu/data_raw", 10);
     mPublisherMag = this->create_publisher<sensor_msgs::msg::MagneticField>("/imu/mag", 10);
-    mTimer = this->create_wall_timer(std::chrono::duration<double, std::milli>(10), std::bind(&ImuPublisher::timer_callback, this));
+    mTimer = this->create_wall_timer(std::chrono::duration<double, std::milli>(10), std::bind(&mpu9250::timer_callback, this));
   }
 
 private:
@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 {
 
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<ImuPublisher>());
+  rclcpp::spin(std::make_shared<mpu9250>());
   rclcpp::shutdown();
   return 0;
 }
